@@ -16,59 +16,75 @@
 
 ## What is Forge?
 
-When you ask multiple AI agents to build something together, they fail. One agent writes `processPayment()`, another expects `handlePayment()`. One uses camelCase, another uses snake_case. Nothing fits.
+When multiple AI agents build something together, they fail. One writes `processPayment()`, another expects `handlePayment()`. Nothing fits.
 
-**Forge fixes this.** It gives every agent a shared contract before they start coding, so their code works together on the first try.
-
-<div align="center">
-<img src="assets/before-after.png" alt="Without Forge vs With Forge" width="800"/>
-</div>
+**Forge gives every agent a shared contract before they start**, so their code works together on the first try.
 
 ---
 
 ## How it works
 
-Seven steps. Fully automated.
+```mermaid
+flowchart LR
+    A["1. Analyze\n_______\nRead project,\nscore complexity"] --> B["2. Pick Mode\n_______\nParallel, Hybrid,\nor Sequential"]
+    B --> C["3. Contract\n_______\nShared blueprint:\nnames, types, style"]
+    C --> D["4. Dashboard\n_______\nLive monitor,\nzero dependencies"]
+    D --> E["5. Execute\n_______\nAgents build\ntheir parts"]
+    E --> F["6. Validate\n_______\nAuto-check\nsyntax & imports"]
+    F --> G["7. Deliver\n_______\nMerge into\nclean code"]
 
-<div align="center">
-<img src="assets/pipeline.png" alt="Forge 7-Phase Pipeline" width="800"/>
-</div>
-
-| Step | What happens |
-|------|-------------|
-| **Analyze** | Reads your project, figures out what needs to be built |
-| **Mode Select** | Picks the best strategy based on how connected your modules are |
-| **Contract** | Writes a shared blueprint: function names, types, imports, style rules |
-| **Dashboard** | Launches a live monitor so you can watch agents work |
-| **Execute** | Agents build their parts following the contract |
-| **Validate** | Auto-checks everything: syntax, imports, naming, completeness |
-| **Deliver** | Merges it all into clean, ready-to-use code |
+    style A fill:#4a1942,stroke:#9b59b6,color:#fff
+    style B fill:#1a3a5c,stroke:#3498db,color:#fff
+    style C fill:#1a4731,stroke:#27ae60,color:#fff
+    style D fill:#4a3728,stroke:#e67e22,color:#fff
+    style E fill:#4a1942,stroke:#9b59b6,color:#fff
+    style F fill:#1a3a5c,stroke:#3498db,color:#fff
+    style G fill:#1a4731,stroke:#27ae60,color:#fff
+```
 
 ---
 
 ## Three modes
 
-Forge picks the right one automatically.
+Forge picks the right one based on how connected your modules are.
 
-<div align="center">
-<img src="assets/modes.png" alt="Parallel, Hybrid, Sequential Modes" width="800"/>
-</div>
+```mermaid
+flowchart TB
+    subgraph PARALLEL["Parallel Mode &nbsp; | &nbsp; Coupling < 0.4 &nbsp; | &nbsp; 5.2x faster"]
+        direction LR
+        PA1[Agent 1] ~~~ PA2[Agent 2] ~~~ PA3[Agent 3] ~~~ PA4[Agent 4]
+    end
 
-| Mode | When | Speed |
-|------|------|-------|
-| **Parallel** | Modules don't depend on each other | 5.2x faster |
-| **Hybrid** | Some shared foundation, then independent features | 2.8x faster |
-| **Sequential** | Everything depends on everything | Safest |
+    subgraph HYBRID["Hybrid Mode &nbsp; | &nbsp; Coupling 0.4-0.7 &nbsp; | &nbsp; 2.8x faster"]
+        direction LR
+        HCore[Core Agent] --> HF1[Feature 1]
+        HCore --> HF2[Feature 2]
+        HCore --> HF3[Feature 3]
+    end
+
+    subgraph SEQUENTIAL["Sequential Mode &nbsp; | &nbsp; Coupling > 0.7 &nbsp; | &nbsp; Safest"]
+        direction LR
+        S1[Agent 1] --> S2[Agent 2] --> S3[Agent 3] --> S4[Agent 4]
+    end
+
+    style PARALLEL fill:#1a4731,stroke:#27ae60,color:#fff
+    style HYBRID fill:#4a3728,stroke:#e67e22,color:#fff
+    style SEQUENTIAL fill:#4a1942,stroke:#9b59b6,color:#fff
+```
 
 ---
 
 ## Results
 
-Tested across 400+ experiments. Not theory -- measured.
+Tested across 400+ experiments.
 
-<div align="center">
-<img src="assets/results.png" alt="Quality comparison across 7 approaches" width="800"/>
-</div>
+```mermaid
+xychart-beta
+    title "Quality Score by Approach"
+    x-axis ["Naive\nParallel", "Naive\nSequential", "Shared\nContext", "Self\nRepair", "Human\nContract", "LLM\nContract", "Forge"]
+    y-axis "Quality Score" 0.4 --> 1.0
+    bar [0.571, 0.614, 0.682, 0.728, 0.794, 0.803, 0.871]
+```
 
 | What we measured | Result |
 |-----------------|--------|
@@ -79,13 +95,38 @@ Tested across 400+ experiments. Not theory -- measured.
 
 ---
 
+## What's in the contract?
+
+The contract is the key idea. Before any agent writes code, Forge generates this:
+
+```mermaid
+flowchart TB
+    CONTRACT["Coordination Contract"]
+    CONTRACT --> MM["Module Manifest\n_What each agent builds_"]
+    CONTRACT --> ID["Interface Definitions\n_Function signatures & types_"]
+    CONTRACT --> ST["Shared Types\n_Common data structures_"]
+    CONTRACT --> SG["Style Guide\n_Naming, formatting rules_"]
+    CONTRACT --> DM["Dependency Map\n_Who imports from where_"]
+    CONTRACT --> SB["Section Boundaries\n_Clear code ownership_"]
+
+    style CONTRACT fill:#4a1942,stroke:#9b59b6,color:#fff
+    style MM fill:#1a3a5c,stroke:#3498db,color:#fff
+    style ID fill:#1a3a5c,stroke:#3498db,color:#fff
+    style ST fill:#1a3a5c,stroke:#3498db,color:#fff
+    style SG fill:#1a3a5c,stroke:#3498db,color:#fff
+    style DM fill:#1a3a5c,stroke:#3498db,color:#fff
+    style SB fill:#1a3a5c,stroke:#3498db,color:#fff
+```
+
+---
+
 ## Quick start
 
 ```bash
 forge build project.yaml
 ```
 
-That's it. Forge handles analysis, contracts, agent selection, execution, validation, and delivery.
+That's it. Forge handles everything.
 
 ---
 
@@ -93,11 +134,11 @@ That's it. Forge handles analysis, contracts, agent selection, execution, valida
 
 | Document | What's in it |
 |----------|-------------|
-| [SKILL.md](SKILL.md) | Full protocol specification (1956 lines) |
-| [Architecture](docs/ARCHITECTURE.md) | How the 7 phases work internally |
-| [Experiments](docs/EXPERIMENTS.md) | All 400+ experiment details and data |
-| [Agent Roles](docs/AGENT-ROLES.md) | The 15+ specialized agent types |
-| [REST API Example](examples/rest-api-example.md) | Worked example: task management API |
+| [SKILL.md](SKILL.md) | Full protocol spec |
+| [Architecture](docs/ARCHITECTURE.md) | How the 7 phases work |
+| [Experiments](docs/EXPERIMENTS.md) | All 400+ experiment data |
+| [Agent Roles](docs/AGENT-ROLES.md) | 15+ agent types |
+| [REST API Example](examples/rest-api-example.md) | Worked example |
 
 ---
 
